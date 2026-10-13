@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Event - Student Photo Portal</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<script>
+
+    const isLoggedIn =
+        localStorage.getItem("adminLoggedIn");
+
+    if (isLoggedIn !== "true") {
+
+        window.location.href =
+            "login.html";
+
+    }
+
+</script>
+    <header>
+        <h1>Student Photo Portal</h1>
+        <p>Admin - Add School Event</p>
+        <button onclick="logout()">
+          Logout
+        </button>
+    </header>
+
+    <main>
+
+        <h2>Add New Event</h2>
+
+        <form id="eventForm">
+
+            <label>Event Name</label>
+            <br>
+
+            <input type="text"
+       id="eventName"
+       placeholder="Enter event name"
+       required>
+
+            <br><br>
+
+            <label>Event Date</label>
+            <br>
+
+            <input type="date"
+       id="eventDate"
+       required>
+
+            <br><br>
+
+            <label>Event Description</label>
+            <br>
+
+            <textarea
+    id="eventDescription"
+    placeholder="Enter event description"
+    rows="4"></textarea>
+
+            <br><br>
+
+            <label>Select Event Photos</label>
+            <br>
+
+            <input type="file"
+       id="eventPhotos"
+       accept="image/*"
+       multiple
+       required>
+
+            <br><br>
+
+            <button type="submit">
+                Add Event
+            </button>
+
+        </form>
+
+    </main>
+<script src="js/script.js"></script>
+<script>
+
+    function logout() {
+
+        localStorage.removeItem("adminLoggedIn");
+
+        window.location.href = "login.html";
+
+    }
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="index.html">Home</a>
+
+        <a href="events.html">Events</a>
+
+        <a href="#" onclick="logout()">Logout</a>
+
+    </nav>
+
+
+    <header>
+
+        <h1>School Event Photo Portal</h1>
+
+        <p>Admin Dashboard</p>
+
+    </header>
+
+
+    <main>
+
+        <h2>Admin Dashboard</h2>
+
+        <p>
+            Manage school events and event photos.
+        </p>
+        <div class="event-card">
+
+    <h3>📊 Portal Statistics</h3>
+
+    <p>
+        Total Events:
+        <strong id="totalEvents">0</strong>
+    </p>
+
+    <p>
+        Total Photos:
+        <strong id="totalPhotos">0</strong>
+    </p>
+
+</div>
+
+        <div class="event-card">
+
+            <h3>📸 Add New Event</h3>
+
+            <p>
+                Create a new school event and upload
+                multiple photos.
+            </p>
+
+            <button
+                onclick="window.location.href='add-event.html'">
+
+                Add New Event
+
+            </button>
+
+        </div>
+
+
+        <div class="event-card">
+
+            <h3>📋 Manage Events</h3>
+
+            <p>
+                View and manage all school events.
+            </p>
+
+            <button
+                onclick="window.location.href='events.html'">
+
+                Manage Events
+
+            </button>
+
+        </div>
+
+
+        <div class="event-card">
+
+            <h3>🚪 Logout</h3>
+
+            <p>
+                Logout from the admin account.
+            </p>
+
+            <button onclick="logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        // Check Admin Login
+
+        const isLoggedIn =
+            localStorage.getItem("adminLoggedIn");
+
+
+        if (isLoggedIn !== "true") {
+
+            window.location.href =
+                "login.html";
+
+        }
+
+const savedEvents =
+    JSON.parse(
+        localStorage.getItem("schoolEvents")
+    ) || [];
+
+
+document.getElementById("totalEvents").innerText =
+    savedEvents.length;
+
+
+let photoCount = 0;
+
+
+savedEvents.forEach(function(eventData) {
+
+    if (eventData.photos) {
+
+        photoCount += eventData.photos.length;
+
+    }
+
+});
+
+
+document.getElementById("totalPhotos").innerText =
+    photoCount;
+        // Logout
+
+        function logout() {
+
+            localStorage.removeItem(
+                "adminLoggedIn"
+            );
+
+            window.location.href =
+                "login.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

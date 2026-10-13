@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>School Events</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="index.html">Home</a>
+
+        <a href="events.html">School Events</a>
+
+        <a href="login.html">Admin Login</a>
+
+    </nav>
+
+
+    <header>
+
+        <h1>School Event Photo Portal</h1>
+
+        <p>School Events Gallery</p>
+
+    </header>
+
+
+    <main>
+
+        <h2>School Event Gallery</h2>
+
+        <p>
+            Explore photos and memories from our school events.
+        </p>
+
+        <div id="eventsContainer"></div>
+
+    </main>
+
+
+    <script>
+
+        const eventsContainer =
+            document.getElementById("eventsContainer");
+
+
+        const savedEvents =
+            localStorage.getItem("schoolEvents");
+
+
+        if (savedEvents) {
+
+            const events =
+                JSON.parse(savedEvents);
+
+
+            if (events.length > 0) {
+
+                eventsContainer.innerHTML = "";
+
+
+                events.forEach(function(eventData, index) {
+
+                    const eventCard =
+                        document.createElement("div");
+
+                    eventCard.className =
+                        "event-card";
+
+
+                    // Cover Photo
+
+                    if (
+                        eventData.photos &&
+                        eventData.photos.length > 0
+                    ) {
+
+                        const coverImage =
+                            document.createElement("img");
+
+
+                        coverImage.src =
+                            eventData.photos[0];
+
+
+                        coverImage.style.width =
+                            "100%";
+
+
+                        coverImage.style.height =
+                            "220px";
+
+
+                        coverImage.style.objectFit =
+                            "cover";
+
+
+                        coverImage.style.borderRadius =
+                            "10px";
+
+
+                        coverImage.style.marginBottom =
+                            "15px";
+
+
+                        eventCard.appendChild(
+                            coverImage
+                        );
+
+                    }
+
+
+                    // Event Name
+
+                    const eventName =
+                        document.createElement("h3");
+
+
+                    eventName.innerText =
+                        eventData.name;
+
+
+                    eventCard.appendChild(
+                        eventName
+                    );
+
+
+                    // Event Date
+
+                    const eventDate =
+                        document.createElement("p");
+
+
+                    eventDate.innerHTML =
+                        "<strong>Date:</strong> " +
+                        eventData.date;
+
+
+                    eventCard.appendChild(
+                        eventDate
+                    );
+
+
+                    // Event Description
+
+                    const eventDescription =
+                        document.createElement("p");
+
+
+                    eventDescription.innerText =
+                        eventData.description;
+
+
+                    eventCard.appendChild(
+                        eventDescription
+                    );
+
+
+                    // View Photos Button
+
+                    const viewButton =
+                        document.createElement("button");
+
+
+                    viewButton.innerText =
+                        "View Photos";
+
+
+                    viewButton.onclick =
+                        function() {
+
+                            viewPhotos(index);
+
+                        };
+
+
+                    eventCard.appendChild(
+                        viewButton
+                    );
+
+
+                    // Delete button only for Admin
+
+                    if (
+                        localStorage.getItem(
+                            "adminLoggedIn"
+                        ) === "true"
+                    ) {
+
+                        const deleteButton =
+                            document.createElement("button");
+
+
+                        deleteButton.innerText =
+                            "Delete Event";
+
+
+                        deleteButton.onclick =
+                            function() {
+
+                                deleteEvent(index);
+
+                            };
+
+
+                        eventCard.appendChild(
+                            deleteButton
+                        );
+
+                    }
+
+
+                    eventsContainer.appendChild(
+                        eventCard
+                    );
+
+                });
+
+
+            } else {
+
+                eventsContainer.innerHTML =
+                    "<p>No events available.</p>";
+
+            }
+
+
+        } else {
+
+            eventsContainer.innerHTML =
+                "<p>No events available.</p>";
+
+        }
+
+
+        // View Photos
+
+        function viewPhotos(index) {
+
+            localStorage.setItem(
+                "selectedEvent",
+                index
+            );
+
+
+            window.location.href =
+                "gallery.html";
+
+        }
+
+
+        // Delete Event
+
+        function deleteEvent(index) {
+
+            const confirmDelete =
+                confirm(
+                    "Are you sure you want to delete this event?"
+                );
+
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+
+            let events =
+                JSON.parse(
+                    localStorage.getItem(
+                        "schoolEvents"
+                    )
+                ) || [];
+
+
+            events.splice(index, 1);
+
+
+            localStorage.setItem(
+                "schoolEvents",
+                JSON.stringify(events)
+            );
+
+
+            alert(
+                "Event deleted successfully!"
+            );
+
+
+            location.reload();
+
+        }
+
+    </script>
+
+</body>
+
+</html>

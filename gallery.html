@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Event Photo Gallery</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>School Event Photo Portal</h1>
+
+        <p>Event Photo Gallery</p>
+
+    </header>
+
+
+    <main>
+
+        <h2 id="galleryTitle">
+            Event Photos
+        </h2>
+<button onclick="window.location.href='events.html'">
+    ← Back to Events
+</button>
+        <div id="gallery" class="photo-gallery"></div>
+
+    </main>
+
+
+    <script>
+
+        const gallery =
+            document.getElementById("gallery");
+
+        const galleryTitle =
+            document.getElementById("galleryTitle");
+
+
+        const savedEvents =
+            localStorage.getItem("schoolEvents");
+
+        const selectedIndex =
+            localStorage.getItem("selectedEvent");
+
+
+        if (savedEvents && selectedIndex !== null) {
+
+            const events =
+                JSON.parse(savedEvents);
+
+            const eventData =
+                events[Number(selectedIndex)];
+
+
+            if (eventData && eventData.photos) {
+
+                galleryTitle.innerText =
+                    eventData.name;
+
+
+                // Show ALL photos
+
+                for (
+                    let i = 0;
+                    i < eventData.photos.length;
+                    i++
+                ) {
+
+                    const image =
+                        document.createElement("img");
+
+
+                    image.src =
+                        eventData.photos[i];
+
+
+                    image.alt =
+                        eventData.name + " Photo " + (i + 1);
+
+
+                    image.style.width =
+                        "220px";
+
+                    image.style.height =
+                        "160px";
+
+                    image.style.objectFit =
+                        "cover";
+
+                    image.style.borderRadius =
+                        "10px";
+
+                    image.style.margin =
+                        "5px";
+                    
+                    
+                    image.style.cursor = "pointer";
+                    gallery.appendChild(image);
+
+                }
+
+            } else {
+
+                gallery.innerHTML =
+                    "<p>No photos found for this event.</p>";
+
+            }
+
+        } else {
+
+            gallery.innerHTML =
+                "<p>No event selected.</p>";
+
+        }
+
+    </script>
+<div id="photoModal" class="photo-modal">
+
+    <span id="closeModal" class="close-modal">&times;</span>
+
+    <img id="largePhoto" class="large-photo">
+    <a id="downloadPhoto"
+            class="download-button"
+             download>
+    Download Photo
+</a>
+
+</div>
+<script>
+
+    const photoModal =
+        document.getElementById("photoModal");
+
+    const largePhoto =
+        document.getElementById("largePhoto");
+
+        const downloadPhoto =
+    document.getElementById("downloadPhoto");
+
+    const closeModal =
+        document.getElementById("closeModal");
+
+
+    document.querySelectorAll("#gallery img").forEach(function(image) {
+
+        image.addEventListener("click", function() {
+
+            largePhoto.src = this.src;
+            downloadPhoto.href = this.src;
+            photoModal.style.display = "flex";
+
+        });
+
+    });
+
+
+    closeModal.addEventListener("click", function() {
+
+        photoModal.style.display = "none";
+
+    });
+
+
+    photoModal.addEventListener("click", function(event) {
+
+        if (event.target === photoModal) {
+
+            photoModal.style.display = "none";
+
+        }
+
+    });
+
+</script>
+</body>
+
+</html>
